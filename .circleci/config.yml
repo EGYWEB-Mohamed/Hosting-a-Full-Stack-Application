@@ -1,0 +1,51 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.2.0
+  aws-s3: circleci/aws-s3@3.0.0
+jobs:
+  frontend:
+    working_directory: ~/app/udagram-frontend
+    executor: node/default
+    steps:
+      - checkout:
+          path: ~/app/udagram-frontend
+      - node/install-packages:
+          app-dir: ~/app/udagram-frontend
+      - run:
+          name: Build Frontend
+          command: npm run build
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --recursive"
+          aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+          aws-region: ${AWS_DEFAULT_REGION}
+          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+          from: ./www
+          to: 's3://fwd-msaid/'
+  backend:
+    working_directory: ~/app/udagram-backend
+    executor: node/default
+    steps:
+      - checkout:
+          path: ~/app
+      - node/install-packages:
+          app-dir: ~/app/udagram-backend
+      - run:
+          name: Build & Archive Backend
+          command: |-
+            npm run build
+            printenv > www/.env
+            npm run archive
+      - aws-cli/install
+      - run:
+          name: Deploy Server
+          command: |-
+            aws s3 cp ./www/Archive.zip $S3_BUCKET_SERVER
+            aws elasticbeanstalk create-application-version --application-name $EB_APP --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="$EB_BUCKET",S3Key="Archive.zip"
+            aws elasticbeanstalk update-environment --application-name $EB_APP --environment-name $EB_ENV --version-label <<pipeline.git.revision>>
+workflows:
+  Install And Deploy App:
+    jobs:
+      - frontend
+      ##- backend

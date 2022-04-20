@@ -1,0 +1,12 @@
+{
+    "scripts": {
+        "backend:init": "cd udagram-backend && npm run build && npm ci",
+        "backend:test": "cd udagram-backend && npm run test",
+        "front:init": "cd udagram-front && npm run build && npm ci",
+        "front:test": "cd udagram-front && npm run test",
+        "project:deploy": "npm run backend:init && npm run backend:test && npm run front:init && npm run front:test"
+    },
+    "devDependencies": {
+        "@angular/cli": "^13.3.3"
+    }
+}
