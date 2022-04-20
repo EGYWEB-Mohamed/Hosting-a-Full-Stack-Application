@@ -38,6 +38,9 @@ jobs:
       - run:
           name: Create Application Version
           command: aws elasticbeanstalk create-application-version --application-name 'udagram-api' --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="fwd-msaid",S3Key="Archive.zip"
+      - run:
+          name: Update Environment
+          command: aws elasticbeanstalk update-environment --application-name 'udagram-api' --environment-name 'udagram-api-dev' --version-label <<pipeline.git.revision>>
 workflows:
   Install And Deploy App:
     jobs:
