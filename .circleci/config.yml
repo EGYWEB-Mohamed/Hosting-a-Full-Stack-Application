@@ -34,7 +34,7 @@ jobs:
       - aws-cli/install
       - run:
           name: Copy Build From S3
-          command: aws s3 cp ./www/Archive.zip $S3_BUCKET_SERVER
+          command: aws s3 cp ./www/Archive.zip S3_BUCKET_SERVER
       - run:
           name: Create Application Version
           command: aws elasticbeanstalk create-application-version --application-name $EB_APP --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="$EB_BUCKET",S3Key="Archive.zip"
