@@ -14,12 +14,10 @@ jobs:
       - run:
           name: Build Frontend
           command: npm run build
-      - aws-s3/sync:
-          arguments: "--acl public-read"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: ./www
-          to: 's3://fwd-msaid/'
+      - aws-s3/copy:
+          bucket: fwd-msaid
+          source: ./www
+          destination: /
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
