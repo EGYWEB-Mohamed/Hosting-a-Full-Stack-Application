@@ -18,7 +18,6 @@ jobs:
           from: ./www
           to: s3://fwd-msaid
           arguments: --recursive
-
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
