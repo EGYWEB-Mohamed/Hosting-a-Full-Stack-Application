@@ -15,9 +15,7 @@ jobs:
           name: Build Frontend
           command: npm run build
       - aws-cli/install
-      - aws-cli/setup:
-          aws-access-key: AWS_ACCESS_KEY_ID
-          aws-secret-key: AWS_SECRET_ACCESS_KEY
+      - aws-cli/setup
       - run:
           name: Deploy Frontend
           command: aws s3 cp --recursive --acl public-read ./www s3://fwd-msaid
