@@ -14,11 +14,15 @@ jobs:
       - run:
           name: Build Frontend
           command: npm run build
-      - aws-s3/copy:
+      - aws-s3/sync:
+          arguments: |
+            --recursive
+            --acl public-read"
+          aws-access-key-id: ${AWS_ACCESS_KEY_ID}
+          aws-region: ${AWS_DEFAULT_REGION}
+          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
           from: ./www
-          to: fwd-msaid
-          region: us-east-1
-          arguments: --recursive
+          to: 's3://fwd-msaid/'
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
