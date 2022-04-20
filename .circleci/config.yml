@@ -44,5 +44,5 @@ jobs:
 workflows:
   Install And Deploy App:
     jobs:
-      ##- frontend
+      - frontend
       - backend
