@@ -37,7 +37,7 @@ jobs:
           command: aws s3 cp ./www/Archive.zip s3://fwd-msaid
       - run:
           name: Create Application Version
-          command: aws elasticbeanstalk create-application-version --application-name $EB_APP --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="s3://fwd-msaid",S3Key="Archive.zip"
+          command: aws elasticbeanstalk create-application-version --application-name 'udagram-api' --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="fwd-msaid",S3Key="Archive.zip"
 workflows:
   Install And Deploy App:
     jobs:
