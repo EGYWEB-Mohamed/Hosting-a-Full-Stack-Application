@@ -18,6 +18,9 @@ jobs:
           arguments: '--recursive --acl public-read'
           from: ./www
           to: 's3://fwd-msaid'
+          aws-region: AWS_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
