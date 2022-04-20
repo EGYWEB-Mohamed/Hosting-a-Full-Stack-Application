@@ -17,6 +17,7 @@ jobs:
       - aws-s3/copy:
           from: ./www
           to: fwd-msaid
+          region: us-east-1
           arguments: --recursive
   backend:
     working_directory: ~/app/udagram-backend
