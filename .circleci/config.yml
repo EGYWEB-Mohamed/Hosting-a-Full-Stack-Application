@@ -16,7 +16,7 @@ jobs:
           command: npm run build
       - aws-s3/copy:
           from: ./www
-          to: s3://fwd-msaid
+          to: fwd-msaid
           arguments: --recursive
   backend:
     working_directory: ~/app/udagram-backend
