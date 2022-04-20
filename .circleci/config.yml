@@ -15,9 +15,9 @@ jobs:
           name: Build Frontend
           command: npm run build
       - aws-s3/copy:
-          bucket: fwd-msaid
-          source: ./www
-          destination: /
+          arguments: '--recursive --acl public-read'
+          from: ./www
+          to: 's3://fwd-msaid'
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
