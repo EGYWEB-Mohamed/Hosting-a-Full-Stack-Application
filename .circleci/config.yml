@@ -18,7 +18,7 @@ jobs:
           arguments: '--recursive --acl public-read'
           from: ./www
           to: 's3://fwd-msaid'
-          aws-region: 'us-east-1'
+          aws-region: AWS_DEFAULT_REGION
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
   backend:
