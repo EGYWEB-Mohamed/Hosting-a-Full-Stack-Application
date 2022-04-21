@@ -3,6 +3,7 @@ orbs:
   node: circleci/node@4.2.0
   aws-cli: circleci/aws-cli@3.0.0
 jobs:
+  # job To Deploy & Test Frontend
   frontend:
     working_directory: ~/app/udagram-frontend
     executor: node/default
@@ -11,13 +12,18 @@ jobs:
           path: ~/app
       - node/install-packages:
           app-dir: ~/app/udagram-frontend
+
+      # Run Npm Build To Install Dependencies
       - run:
           name: Build Frontend
           command: npm run build
+      # Install & Setup AWS CLI
       - aws-cli/install
+      # Upload Frontend To S3
       - run:
           name: Deploy Frontend
           command: aws s3 cp --recursive --acl public-read ./www s3://fwd-msaid
+  # job To Deploy & Test Backend
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
@@ -26,18 +32,21 @@ jobs:
           path: ~/app
       - node/install-packages:
           app-dir: ~/app/udagram-backend
+      # Run Npm Build To Install Dependencies
       - run:
           name: Build & Archive Backend
-          command: |-
-            npm run build
-            printenv > www/.env
+          command: npm run build
+      # Install & Setup AWS CLI
       - aws-cli/install
+      # Copy Build From S3
       - run:
           name: Copy Build From S3
           command: aws s3 cp ./www/Archive.zip s3://fwd-msaid
+      # Create EB Application Version
       - run:
           name: Create Application Version
           command: aws elasticbeanstalk create-application-version --application-name 'udagram-api' --version-label <<pipeline.git.revision>> --source-bundle S3Bucket="fwd-msaid",S3Key="Archive.zip"
+      # Update EB Environment
       - run:
           name: Update Environment
           command: aws elasticbeanstalk update-environment --application-name 'udagram-api' --environment-name 'udagram-api-dev' --version-label <<pipeline.git.revision>>
