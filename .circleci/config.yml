@@ -46,6 +46,10 @@ jobs:
       - run:
           name: Copy ENV To www/.env
           command: printenv > www/.env
+      # SET EB env 
+      - run:
+          name: SET EB env
+          command: eb setenv POSTGRES_USERNAME=$POSTGRES_USERNAME POSTGRES_PASSWORD=$POSTGRES_PASSWORD  POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST DB_PORT=$DB_PORT PORT=$PORT AWS_REGION=$AWS_REGION AWS_PROFILE=$AWS_PROFILE AWS_BUCKET=$AWS_BUCKET URL=$URL JWT_SECRET=$JWT_SECRET
       # Create EB Application Version
       - run:
           name: Create Application Version
