@@ -49,10 +49,6 @@ jobs:
       - run:
           name: Copy ENV To www/.env
           command: printenv > www/.env
-      # Create EB Application Version
-      - run:
-          name: Create Application Version
-          command: npm run eb:deploy
       # Update EB Environment
       - run:
           name: Update Environment
