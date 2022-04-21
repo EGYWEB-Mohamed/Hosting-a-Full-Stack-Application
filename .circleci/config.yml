@@ -28,7 +28,6 @@ jobs:
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
-    - eb/setup
     steps:
       - checkout:
           path: ~/app
