@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@4.2.0
   aws-cli: circleci/aws-cli@3.0.0
+  eb: circleci/aws-elastic-beanstalk@1.0.0
 jobs:
   # job To Deploy & Test Frontend
   frontend:
@@ -27,6 +28,7 @@ jobs:
   backend:
     working_directory: ~/app/udagram-backend
     executor: node/default
+    - eb/setup
     steps:
       - checkout:
           path: ~/app
@@ -49,7 +51,7 @@ jobs:
       # SET EB env 
       - run:
           name: SET EB env
-          command: aws elasticbeanstalk setenv POSTGRES_USERNAME=$POSTGRES_USERNAME POSTGRES_PASSWORD=$POSTGRES_PASSWORD  POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST DB_PORT=$DB_PORT PORT=$PORT AWS_REGION=$AWS_REGION AWS_PROFILE=$AWS_PROFILE AWS_BUCKET=$AWS_BUCKET URL=$URL JWT_SECRET=$JWT_SECRET
+          command: eb setenv POSTGRES_USERNAME=$POSTGRES_USERNAME POSTGRES_PASSWORD=$POSTGRES_PASSWORD  POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST DB_PORT=$DB_PORT PORT=$PORT AWS_REGION=$AWS_REGION AWS_PROFILE=$AWS_PROFILE AWS_BUCKET=$AWS_BUCKET URL=$URL JWT_SECRET=$JWT_SECRET
       # Create EB Application Version
       - run:
           name: Create Application Version
